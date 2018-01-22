@@ -1,10 +1,10 @@
 Copy this to a "Scripts" folder in your project.
 
-Edit the script to point to the correct places.
+Edit the scripts to point to the correct places.
 
-Before pushing, change the version number in versionNb.txt
+Before pushing each time, change the version number in versionNb.txt
 
 
 --
 
-Note: This only work for 1 user and can't be shared well in repos :(
+Current limitation: This only work for 1 user and can't be shared well for multiple repo users :(

@@ -1,43 +1,46 @@
 @echo off
 echo Push build to itch.io
-
 title Push build to itch.io
 
 ::PARAMETERS TO SET
 set butler="%appdata%\itch\bin\butler.exe"
 
 
-::rename nw.exe to the correct name.exe
+::if PC version, rename nw.exe to the correct name.exe
+IF NOT %pushPC% == "true" GOTO pushHtml
+IF NOT %renameExecutables% == "true" GOTO pushHtml
+
 pushd %dossier%\win32
-if %ERRORLEVEL% EQU 1 GOTO error_dossierWin32NotFound
+IF %ERRORLEVEL% == 1 GOTO error_dossierWin32NotFound
 rename nw.exe %exeName%.exe
 popd
 pushd %dossier%\win64
-if %ERRORLEVEL% EQU 1 GOTO error_dossierWin64NotFound
+IF %ERRORLEVEL% == 1 GOTO error_dossierWin64NotFound
 rename nw.exe %exeName%.exe
 popd
 
 ::same for Linux version
 pushd %dossier%\linux32
-if %ERRORLEVEL% EQU 1 GOTO error_dossierlinux32NotFound
+IF %ERRORLEVEL% == 1 GOTO error_dossierlinux32NotFound
 rename nw %exeName%
 popd
 pushd %dossier%\linux64
-if %ERRORLEVEL% EQU 1 GOTO error_dossierlinux64NotFound
+IF %ERRORLEVEL% == 1 GOTO error_dossierlinux64NotFound
 rename nw %exeName%
 popd
 
 
 
 
-::butler push all versions
+::butler push html5
 :pushHtml
-if %pushHtml% EQU "false" GOTO pushPC
+IF NOT %pushHtml% == "true" GOTO pushPC
 
 %butler% push --userversion-file="versionNb.txt" %dossierHtml% narf/%projectNameItchIO%:html5
 
+::butler push PC apps
 :pushPC
-if %pushPC% EQU "false" GOTO status
+IF NOT %pushPC% == "true" GOTO status
 
 %butler% push --userversion-file="versionNb.txt" %dossier%\win32 narf/%projectNameItchIO%:windows32
 
